@@ -4,15 +4,17 @@ type Props = {
   value: number;
   selected: boolean;
   onPress: (value: number) => void;
+  labelPrefix: string;
 };
 
-export default function PainButton({ value, selected, onPress }: Props) {
+export default function PainButton({ value, selected, onPress, labelPrefix }: Props) {
   return (
     <Pressable
       onPress={() => onPress(value)}
       style={[styles.button, selected && styles.selected]}
       accessibilityRole="button"
-      accessibilityLabel={`Dolor nivel ${value}`}
+      accessibilityLabel={`${labelPrefix} ${value}`}
+      accessibilityState={{selected}}
     >
       <Text style={selected ? styles.textSelected : styles.text}>{value}</Text>
     </Pressable>
