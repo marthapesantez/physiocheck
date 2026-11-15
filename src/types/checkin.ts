@@ -5,4 +5,5 @@ export type CheckIn ={
     zones: string[];
     energy: number;
     mood: number;
+    notes: string;
 };

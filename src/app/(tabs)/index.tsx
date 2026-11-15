@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Alert, Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import PainButton from "../../components/PainButton";
 import ZoneChip from "../../components/ZoneChip";
+import { saveCheckIn } from "../../storage/checkins";
 import type { CheckIn as CheckInType } from "../../types/checkin";
+
 
 const ZONES =["Cuello", "Hombro", "Espalda alta","Espalda baja","Codo", "Muñeca","Cadera", "Rodillo", "Tobillo", "Otra"]
 
@@ -11,6 +13,7 @@ export default function CheckIn() {
   const [zones, setZones] = useState<string[]>([]);
   const [energy,setEnergy] = useState<number | null>(null);
   const [mood,setMood] = useState<number | null>(null);
+  const [notes, setNotes] = useState("");
 
   const toggleZone =(zone:string)=>{
     setZones((prev) =>
@@ -20,8 +23,9 @@ export default function CheckIn() {
 
   const canSave = pain !==null && energy !== null  && mood !==null;
   
-  const handleSave = () =>{
-    if (!canSave) return;
+  const handleSave = async () =>{
+    if (pain===null || energy === null || mood=== null) return;
+
     const checkIn: CheckInType ={
       id: Date.now().toString(),
       date: new Date().toISOString(),
@@ -29,14 +33,20 @@ export default function CheckIn() {
       zones,
       energy,
       mood,
+      notes
     };
-    console.log(checkIn);
-    Alert.alert("Check-in guardado");
-    setPain(null);
-    setZones([]);
-    setEnergy(null);
-    setMood(null);
-
+    try{
+      await saveCheckIn(checkIn);
+      Alert.alert("Check-in guardado");
+      setPain(null);
+      setZones([]);
+      setEnergy(null);
+      setMood(null);
+      setNotes("");
+    }catch(error){
+      console.log(error);
+      Alert.alert("Error", "No se pudo guardar. Inténtalo de nuevo.");
+    }
   }
 
   return (
@@ -78,6 +88,17 @@ export default function CheckIn() {
             />
         ))}
       </View>
+      <Text style={styles.title}>Notas</Text>
+     <TextInput
+      value={notes}
+      onChangeText = {setNotes}
+      placeholder="¿Algo más que quieras contar?"
+      multiline
+      style={styles.input}
+      accessibilityLabel="Notas del día"
+     />
+
+
       
       <Button 
       title="Guardar"
@@ -103,4 +124,13 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     flexWrap: "wrap",
    },
+   input:{
+     borderWidth: 1,
+     borderColor: "#888",
+     borderRadius:8,
+     padding: 10,
+     minHeight: 80,
+     textAlignVertical: "top",
+     marginBottom: 16,
+   }
 });
