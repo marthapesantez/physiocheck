@@ -7,14 +7,19 @@ type Props = {
   labelPrefix: string;
 };
 
-export default function PainButton({ value, selected, onPress, labelPrefix }: Props) {
+export default function PainButton({
+  value,
+  selected,
+  onPress,
+  labelPrefix,
+}: Props) {
   return (
     <Pressable
       onPress={() => onPress(value)}
       style={[styles.button, selected && styles.selected]}
       accessibilityRole="button"
       accessibilityLabel={`${labelPrefix} ${value}`}
-      accessibilityState={{selected}}
+      accessibilityState={{ selected }}
     >
       <Text style={selected ? styles.textSelected : styles.text}>{value}</Text>
     </Pressable>
@@ -23,9 +28,9 @@ export default function PainButton({ value, selected, onPress, labelPrefix }: Pr
 
 const styles = StyleSheet.create({
   button: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: "#888",
     alignItems: "center",

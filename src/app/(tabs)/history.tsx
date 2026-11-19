@@ -4,7 +4,7 @@ import PainChart from "../../components/PainChart";
 import { useCheckIns } from "../../hooks/useCheckIns";
 
 export default function History() {
-  const {items, loading, error, reload, clear, seed} = useCheckIns();
+  const { items, loading, error, reload, clear, seed } = useCheckIns();
 
   if (loading) {
     return (
@@ -14,11 +14,11 @@ export default function History() {
     );
   }
 
-  if (error){
+  if (error) {
     return (
-      <View style ={ styles.center}>
-        <Text style= {styles.error}>{error }</Text>
-        <Button title="Reintentar" onPress={reload}/>
+      <View style={styles.center}>
+        <Text style={styles.error}>{error}</Text>
+        <Button title="Reintentar" onPress={reload} />
       </View>
     );
   }
@@ -40,7 +40,7 @@ export default function History() {
             <Button title="Cargar datos de prueba" onPress={seed} />
             <Button title="Borrar todo" onPress={clear} />
           </View>
-        ) : null
+        ) : undefined
       }
       contentContainerStyle={styles.container}
     />
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 12 },
   empty: { textAlign: "center", marginTop: 32, color: "#666" },
-  error: {color: "#b91c1c"},
+  error: { color: "#b91c1c" },
   dev: { marginTop: 16, gap: 8 },
 });

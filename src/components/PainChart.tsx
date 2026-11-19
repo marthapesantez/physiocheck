@@ -16,9 +16,9 @@ function barColor(pain: number): string {
 
 export default function PainChart({ items }: Props) {
   const data = items.slice(0, 7).reverse();
-  
+
   if (data.length === 0) return null;
-  const totalPain = data.reduce((total,i)=> total+i.pain,0);
+  const totalPain = data.reduce((total, i) => total + i.pain, 0);
   const averagePain = totalPain / data.length;
 
   const summary = data
@@ -32,7 +32,9 @@ export default function PainChart({ items }: Props) {
       accessibilityRole="image"
       accessibilityLabel={`Gráfico de dolor de los últimos ${data.length} registros, promedio ${averagePain.toFixed(1)}. ${summary}`}
     >
-      <Text style={styles.title}>Dolor reciente (promedio {averagePain.toFixed(1)})</Text>
+      <Text style={styles.title}>
+        Dolor reciente (promedio {averagePain.toFixed(1)})
+      </Text>
       <View style={styles.chart}>
         {data.map((item) => (
           <View key={item.id} style={styles.column}>
