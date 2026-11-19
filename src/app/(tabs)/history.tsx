@@ -1,42 +1,24 @@
-import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import CheckInCard from "../../components/CheckInCard";
 import PainChart from "../../components/PainChart";
-import {
-  clearCheckIns,
-  getCheckIns,
-  seedCheckIns
-} from "../../storage/checkins";
-import type { CheckIn } from "../../types/checkin";
+import { useCheckIns } from "../../hooks/useCheckIns";
 
 export default function History() {
-  const [items, setItems] = useState<CheckIn[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const load = useCallback(() => {
-    getCheckIns()
-      .then(setItems)
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
-
-  useFocusEffect(load);
-
-  const handleClear = async () => {
-    await clearCheckIns();
-    setItems([]);
-  };
-
-  const handleSeed = async () => {
-    await seedCheckIns();
-    load();
-  };
+  const {items, loading, error, reload, clear, seed} = useCheckIns();
 
   if (loading) {
     return (
       <View style={styles.center}>
         <Text>Cargando...</Text>
+      </View>
+    );
+  }
+
+  if (error){
+    return (
+      <View style ={ styles.center}>
+        <Text style= {styles.error}>{error }</Text>
+        <Button title="Reintentar" onPress={reload}/>
       </View>
     );
   }
@@ -55,8 +37,8 @@ export default function History() {
       ListFooterComponent={
         __DEV__ ? (
           <View style={styles.dev}>
-            <Button title="Cargar datos de prueba" onPress={handleSeed} />
-            <Button title="Borrar todo" onPress={handleClear} />
+            <Button title="Cargar datos de prueba" onPress={seed} />
+            <Button title="Borrar todo" onPress={clear} />
           </View>
         ) : null
       }
@@ -67,7 +49,8 @@ export default function History() {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center" },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 12 },
   empty: { textAlign: "center", marginTop: 32, color: "#666" },
+  error: {color: "#b91c1c"},
   dev: { marginTop: 16, gap: 8 },
 });

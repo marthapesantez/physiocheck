@@ -1,8 +1,7 @@
-import { useRouter } from "expo-router";
+
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Settings() {
-  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text>Ajustes</Text>

@@ -2,11 +2,9 @@ import { useState } from "react";
 import { Alert, Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import PainButton from "../../components/PainButton";
 import ZoneChip from "../../components/ZoneChip";
+import { ZONES } from "../../constants/zones";
 import { saveCheckIn } from "../../storage/checkins";
 import type { CheckIn as CheckInType } from "../../types/checkin";
-
-
-const ZONES =["Cuello", "Hombro", "Espalda alta","Espalda baja","Codo", "Muñeca","Cadera", "Rodillo", "Tobillo", "Otra"]
 
 export default function CheckIn() {
   const [pain, setPain] = useState<number | null>(null);
